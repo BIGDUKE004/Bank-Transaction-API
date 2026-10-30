@@ -1,11 +1,9 @@
 package com.bank.transactionapi.data.models;
 
 import com.bank.transactionapi.data.enums.TransactionType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.*;
-import jakarta.persistence.Id;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 @Entity
@@ -19,7 +17,10 @@ public class Transaction {
     private long id;
     private BigDecimal amount;
     private BigDecimal discountAmount;
-    private BigDecimal amountCharged;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
     private LocalDateTime createdAt;
 }

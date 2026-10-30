@@ -5,5 +5,5 @@ import com.bank.transactionapi.data.models.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    public Customer findByAccountNumber(String account);
+    public Account findByAccountNumber(String account);
 }
