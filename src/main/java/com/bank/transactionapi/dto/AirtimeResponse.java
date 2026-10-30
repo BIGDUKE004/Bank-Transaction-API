@@ -8,8 +8,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 @Data
 public class AirtimeResponse {
-    private int id;
+    private long id;
     private String phoneNumber;
+    private BigDecimal discountAmount;
     private TransactionType type;
     private NetworkProvider networkProvider;
     private LocalDateTime createdAt;

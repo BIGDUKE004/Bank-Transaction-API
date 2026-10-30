@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -76,10 +77,10 @@ public class TransactionServiceImpl implements TransactionService {
             throw new IllegalArgumentException("Amount must be greater than zero");
         }
         Airtime airtime = new Airtime();
-        airtime.setNetworkProvider(request.getNetworkProvider());
         airtime.setAmount(request.getAmount());
         airtime.setPhoneNumber(request.getPhoneNumber());
         airtime.setAccount(account);
+        airtime.setDiscountAmount(BigDecimal.ZERO);
         airtime.setType(TransactionType.AIRTIME);
         airtime.setCreatedAt(LocalDateTime.now());
         airtime.setNetworkProvider(request.getNetworkProvider());
@@ -94,8 +95,11 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionHistoryResponse transactionHistory(TransactionHistoryRequest request) {
         Account account = this.accountRepository.findByAccountNumber(request.getAccountNumber());
+        if (account == null) {
+            throw new AccountNotFoundException("Account not found");
+        }
         TransactionHistoryResponse response = new TransactionHistoryResponse();
-        response.setTransactions((ArrayList<Transaction>) account.getTransactions());
+        response.setTransactions((List<Transaction>) account.getTransactions());
         return response;
     }
 }

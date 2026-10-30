@@ -20,6 +20,6 @@ public class AuditLog {
     private long id;
     private LocalDateTime createdAt;
     private String path;
-    private String httpStatus;
+    private String httpMethod;
     private int statusCode;
 }
