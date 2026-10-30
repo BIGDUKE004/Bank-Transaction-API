@@ -54,6 +54,6 @@ public class DiscountRuleImpl implements DiscountRule {
             BigDecimal amountCharged = amount.subtract(discountAmount);
             return amountCharged;
         }
-        return null;
+        return BigDecimal.ZERO;
     }
 }

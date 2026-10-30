@@ -26,7 +26,10 @@ public class Mapper {
 
     public static AirtimeResponse mapToAirtimeResponse(Transaction saved, NetworkProvider networkProvider, String phoneNumber) {
         AirtimeResponse airtimeResponse = new AirtimeResponse();
+        airtimeResponse.setId(saved.getId());
+        airtimeResponse.setType(saved.getType());
         airtimeResponse.setCreatedAt(saved.getCreatedAt());
+        airtimeResponse.setDiscountAmount(BigDecimal.ZERO);
         airtimeResponse.setAmount(saved.getAmount());
         airtimeResponse.setNetworkProvider(networkProvider);
         airtimeResponse.setSourceAccount(saved.getAccount().getAccountNumber());
