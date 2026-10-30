@@ -12,8 +12,6 @@ public class AirtimeResponse {
     private String phoneNumber;
     private TransactionType type;
     private NetworkProvider networkProvider;
-    private String discountPercentage;
-    private BigDecimal amountCharged;
     private LocalDateTime createdAt;
     private String sourceAccount;
     private BigDecimal amount;
