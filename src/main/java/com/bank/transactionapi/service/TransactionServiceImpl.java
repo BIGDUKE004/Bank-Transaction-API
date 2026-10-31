@@ -4,9 +4,9 @@ import com.bank.transactionapi.data.enums.TransactionType;
 import com.bank.transactionapi.data.models.*;
 import com.bank.transactionapi.data.repository.AccountRepository;
 import com.bank.transactionapi.data.repository.TransactionRepository;
-import com.bank.transactionapi.discount.DiscountRuleImpl;
 import com.bank.transactionapi.dto.*;
 import com.bank.transactionapi.exception.AccountNotFoundException;
+import com.bank.transactionapi.exception.InvalidAmountException;
 import com.bank.transactionapi.util.Mapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +16,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 public class TransactionServiceImpl implements TransactionService {
     private AccountRepository accountRepository;
-    private DiscountRuleImpl discountRule;
+    private com.bank.transactionapi.discount.DiscountRuleImpl discountRule;
     private TransactionRepository transactionRepository;
 
-    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository, DiscountRuleImpl discountRule) {
+    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository, com.bank.transactionapi.discount.DiscountRuleImpl discountRule) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.discountRule = discountRule;
@@ -37,6 +36,9 @@ public class TransactionServiceImpl implements TransactionService {
         Account account =  accountRepository.findByAccountNumber(request.getSourceAccount());
         if(account == null){
             throw new AccountNotFoundException("Account not found");
+        }
+        if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidAmountException("Amount must be greater than zero");
         }
         BigDecimal discount = BigDecimal.valueOf(0);
         LocalDateTime start = YearMonth.now().atDay(1).atStartOfDay();
@@ -74,7 +76,7 @@ public class TransactionServiceImpl implements TransactionService {
             throw new AccountNotFoundException("Account not found");
         }
         if (request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Amount must be greater than zero");
+            throw new InvalidAmountException("Amount must be greater than zero");
         }
         Airtime airtime = new Airtime();
         airtime.setAmount(request.getAmount());
