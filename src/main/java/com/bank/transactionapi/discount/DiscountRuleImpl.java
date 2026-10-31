@@ -41,8 +41,7 @@ public class DiscountRuleImpl implements DiscountRule {
         int percent = 18;
         BigDecimal percentValue = BigDecimal.valueOf(percent);
         BigDecimal discountAmount = amount.multiply(percentValue).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-        BigDecimal amountCharged = amount.subtract(discountAmount);
-        return amountCharged;
+        return discountAmount;
     }
 
     @Override
@@ -51,8 +50,7 @@ public class DiscountRuleImpl implements DiscountRule {
             int percent = 10;
             BigDecimal percentValue = BigDecimal.valueOf(percent);
             BigDecimal discountAmount = amount.multiply(percentValue).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-            BigDecimal amountCharged = amount.subtract(discountAmount);
-            return amountCharged;
+            return discountAmount;
         }
         return BigDecimal.ZERO;
     }
